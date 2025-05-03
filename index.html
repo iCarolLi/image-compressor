@@ -9,10 +9,19 @@
 </head>
 <body>
     <div class="container">
-        <!-- 头部区域test -->
+        <!-- 语言切换器 -->
+        <div class="language-switcher">
+            <button id="langToggle" class="lang-btn" data-i18n="switchLanguage">切换语言</button>
+            <div class="language-dropdown">
+                <button class="lang-option" data-lang="zh-CN" data-i18n="chinese">中文</button>
+                <button class="lang-option" data-lang="en-US" data-i18n="english">English</button>
+            </div>
+        </div>
+
+        <!-- 头部区域 -->
         <header>
-            <h1>图片压缩工具</h1>
-            <p>简单、高效地压缩您的图片，减小文件大小</p>
+            <h1 data-i18n="title">图片压缩工具</h1>
+            <p data-i18n="subtitle">简单、高效地压缩您的图片，减小文件大小</p>
         </header>
 
         <!-- 主要内容区域 -->
@@ -20,11 +29,11 @@
             <!-- 上传区域 -->
             <section class="upload-section" id="uploadSection">
                 <div class="upload-container" id="dropZone">
-                    <img src="img/upload-icon.svg" alt="上传图标" id="uploadIcon">
-                    <p>将图片拖放到这里或</p>
-                    <label for="fileInput" class="upload-btn">选择图片</label>
+                    <img src="img/upload-icon.svg" alt="上传图标" id="uploadIcon" data-i18n-attr="alt:chooseImage">
+                    <p data-i18n="dropHere">将图片拖放到这里或</p>
+                    <label for="fileInput" class="upload-btn" data-i18n="chooseImage">选择图片</label>
                     <input type="file" id="fileInput" accept="image/png,image/jpeg,image/jpg" hidden>
-                    <p class="file-types">支持 PNG、JPG 格式</p>
+                    <p class="file-types" data-i18n="supportedFormats">支持 PNG、JPG 格式</p>
                 </div>
             </section>
 
@@ -33,53 +42,57 @@
                 <!-- 压缩设置区域 -->
                 <div class="compression-settings">
                     <div class="quality-slider">
-                        <label for="qualitySlider">压缩质量: <span id="qualityValue">80</span>%</label>
+                        <label for="qualitySlider"><span data-i18n="compressionQuality">压缩质量</span>: <span id="qualityValue">80</span>%</label>
                         <input type="range" id="qualitySlider" min="1" max="100" value="80">
                     </div>
-                    <button id="compressBtn" class="action-btn">压缩图片</button>
+                    <button id="compressBtn" class="action-btn" data-i18n="compressImage">压缩图片</button>
                 </div>
                 
                 <!-- 预览区域 -->
                 <div class="preview-container">
                     <div class="preview-box">
-                        <h3>原始图片</h3>
+                        <h3 data-i18n="originalImage">原始图片</h3>
                         <div class="image-container">
-                            <img id="originalImage" alt="原始图片预览">
+                            <img id="originalImage" data-i18n-attr="alt:originalImage" alt="原始图片预览">
                         </div>
                         <div class="image-info">
-                            <p>文件名: <span id="originalFilename"></span></p>
-                            <p>文件大小: <span id="originalSize"></span></p>
-                            <p>尺寸: <span id="originalDimensions"></span></p>
+                            <p><span data-i18n="fileName">文件名</span>: <span id="originalFilename"></span></p>
+                            <p><span data-i18n="fileSize">文件大小</span>: <span id="originalSize"></span></p>
+                            <p><span data-i18n="dimensions">尺寸</span>: <span id="originalDimensions"></span></p>
                         </div>
                     </div>
                     
                     <div class="preview-box">
-                        <h3>压缩后图片</h3>
+                        <h3 data-i18n="compressedImage">压缩后图片</h3>
                         <div class="image-container">
-                            <img id="compressedImage" alt="压缩后图片预览">
+                            <img id="compressedImage" data-i18n-attr="alt:compressedImage" alt="压缩后图片预览">
                         </div>
                         <div class="image-info">
-                            <p>文件大小: <span id="compressedSize">等待压缩...</span></p>
-                            <p>尺寸: <span id="compressedDimensions">等待压缩...</span></p>
-                            <p>压缩率: <span id="compressionRate">等待压缩...</span></p>
+                            <p><span data-i18n="fileSize">文件大小</span>: <span id="compressedSize" data-default-text="waitingCompress">等待压缩...</span></p>
+                            <p><span data-i18n="dimensions">尺寸</span>: <span id="compressedDimensions" data-default-text="waitingCompress">等待压缩...</span></p>
+                            <p><span data-i18n="compressionRate">压缩率</span>: <span id="compressionRate" data-default-text="waitingCompress">等待压缩...</span></p>
                         </div>
                     </div>
                 </div>
                 
                 <!-- 操作区域 -->
                 <div class="actions">
-                    <button id="downloadBtn" class="action-btn primary-btn" disabled>下载压缩图片</button>
-                    <button id="resetBtn" class="action-btn secondary-btn">重新上传</button>
+                    <button id="downloadBtn" class="action-btn primary-btn" disabled data-i18n="download">下载压缩图片</button>
+                    <button id="resetBtn" class="action-btn secondary-btn" data-i18n="reupload">重新上传</button>
                 </div>
             </section>
         </main>
 
         <!-- 底部区域 -->
         <footer>
-            <p>© <span id="currentYear"></span> 图片压缩工具 | 使用HTML5技术 | 无需上传至服务器</p>
+            <p>© <span id="currentYear"></span> <span data-i18n="footer">图片压缩工具 | 使用HTML5技术 | 无需上传至服务器</span></p>
         </footer>
     </div>
 
+    <!-- 语言文件 -->
+    <script src="js/i18n/zh-CN.js"></script>
+    <script src="js/i18n/en-US.js"></script>
+    <script src="js/i18n/i18n.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html> 

@@ -17,6 +17,9 @@ const compressedSize = document.getElementById('compressedSize');
 const compressedDimensions = document.getElementById('compressedDimensions');
 const compressionRate = document.getElementById('compressionRate');
 const currentYear = document.getElementById('currentYear');
+const langToggle = document.getElementById('langToggle');
+const languageDropdown = document.querySelector('.language-dropdown');
+const langOptions = document.querySelectorAll('.lang-option');
 
 // 全局变量
 let originalFile = null;
@@ -26,6 +29,9 @@ let compressedBlob = null;
 document.addEventListener('DOMContentLoaded', () => {
     // 设置当前年份
     currentYear.textContent = new Date().getFullYear();
+    
+    // 初始化国际化
+    initI18n();
     
     // 拖放上传事件处理
     setupDragAndDrop();
@@ -47,6 +53,49 @@ document.addEventListener('DOMContentLoaded', () => {
     // 重置按钮事件处理
     resetBtn.addEventListener('click', resetApp);
 });
+
+// 初始化国际化
+function initI18n() {
+    // 初始化语言文本
+    updatePageTexts();
+    
+    // 高亮当前语言选项
+    updateLanguageIndicator();
+    
+    // 语言切换按钮点击事件
+    langToggle.addEventListener('click', () => {
+        languageDropdown.classList.toggle('show');
+    });
+    
+    // 语言选项点击事件
+    langOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            const lang = option.getAttribute('data-lang');
+            switchLanguage(lang);
+            updateLanguageIndicator();
+            languageDropdown.classList.remove('show');
+        });
+    });
+    
+    // 点击页面其他地方关闭语言下拉菜单
+    document.addEventListener('click', (e) => {
+        if (!langToggle.contains(e.target) && !languageDropdown.contains(e.target)) {
+            languageDropdown.classList.remove('show');
+        }
+    });
+}
+
+// 更新语言指示器
+function updateLanguageIndicator() {
+    langOptions.forEach(option => {
+        const lang = option.getAttribute('data-lang');
+        if (lang === currentLanguage) {
+            option.classList.add('active');
+        } else {
+            option.classList.remove('active');
+        }
+    });
+}
 
 // 设置拖放上传
 function setupDragAndDrop() {
@@ -101,7 +150,7 @@ function handleFileSelect(e) {
 function handleFile(file) {
     // 验证文件类型
     if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
-        alert('请选择 JPG 或 PNG 格式的图片！');
+        alert(t('formatError'));
         return;
     }
     
@@ -128,13 +177,13 @@ function displayOriginalImage(file) {
             // 显示原始图片信息
             originalFilename.textContent = file.name;
             originalSize.textContent = formatFileSize(file.size);
-            originalDimensions.textContent = `${img.width} × ${img.height} 像素`;
+            originalDimensions.textContent = `${img.width} × ${img.height} ${t('dimensions')}`;
             
             // 重置压缩后的图片信息
             compressedImage.src = '';
-            compressedSize.textContent = '等待压缩...';
-            compressedDimensions.textContent = '等待压缩...';
-            compressionRate.textContent = '等待压缩...';
+            compressedSize.textContent = t('waitingCompress');
+            compressedDimensions.textContent = t('waitingCompress');
+            compressionRate.textContent = t('waitingCompress');
             
             // 禁用下载按钮
             downloadBtn.disabled = true;
@@ -180,7 +229,7 @@ function compressImage() {
                     
                     // 显示压缩后的图片信息
                     compressedSize.textContent = formatFileSize(blob.size);
-                    compressedDimensions.textContent = `${img.width} × ${img.height} 像素`;
+                    compressedDimensions.textContent = `${img.width} × ${img.height} ${t('dimensions')}`;
                     
                     // 计算压缩率
                     const ratio = (1 - (blob.size / originalFile.size)) * 100;
@@ -208,7 +257,7 @@ function downloadCompressedImage() {
     const originalName = originalFile.name;
     const extension = originalName.slice(originalName.lastIndexOf('.'));
     const nameWithoutExt = originalName.slice(0, originalName.lastIndexOf('.'));
-    link.download = `${nameWithoutExt}_压缩后${extension}`;
+    link.download = `${nameWithoutExt}_${t('compressedSuffix')}${extension}`;
     
     // 触发下载
     document.body.appendChild(link);
